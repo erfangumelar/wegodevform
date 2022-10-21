@@ -1,19 +1,10 @@
 import express from "express";
+import AuthController from "../controllers/AuthController.js";
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    console.log(req.body.umur)
-    res.json({
-        title: `Hello ${req.query.nama}`
-    })
-});
+router.post("/register", AuthController.register);
+router.post("/login", AuthController.login);
+router.post("/refresh-token", AuthController.refreshToken);
 
-router.post('/', (req, res) => {
-    console.log(req.body)
-    res.json({
-        title: `Hello ${req.query.nama}`
-    })
-});
-
-export default router
+export default router;
