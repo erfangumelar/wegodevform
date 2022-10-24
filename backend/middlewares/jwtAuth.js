@@ -1,4 +1,4 @@
-import jsonwebtoken, { decode } from "jsonwebtoken";
+import jsonwebtoken from "jsonwebtoken";
 import dotenv from "dotenv";
 
 const env = dotenv.config().parsed;
