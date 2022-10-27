@@ -4,10 +4,17 @@ import Form from "../models/Form.js";
 class FormController {
   async index(req, res) {
     try {
+      // mengambil paginate dari parameter
+      const limit = parseInt(req.query.limit) || 4;
+      const page = parseInt(req.query.page) || 1;
+
       // mengecek form ke database
-      const form = await Form.find({
-        userId: req.jwt.id,
-      });
+      const form = await Form.paginate(
+        {
+          userId: req.jwt.id,
+        },
+        { limit: limit, page: page }
+      );
 
       // mengecek apakah form ada / tidak
       if (!form) {
