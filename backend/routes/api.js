@@ -19,10 +19,14 @@ router.put("/forms/:id", jwtAuth(), FormController.update);
 router.delete("/forms/:id", jwtAuth(), FormController.destroy);
 
 // Question
-// router.get("/forms", jwtAuth(), FormController.index);
+// router.get("/forms", jwtAuth(), QuestionController.index);
 router.post("/forms/:id/questions", jwtAuth(), QuestionController.store);
-// router.get("/forms/:id", jwtAuth(), FormController.show);
-// router.put("/forms/:id", jwtAuth(), FormController.update);
-// router.delete("/forms/:id", jwtAuth(), FormController.destroy);
+// router.get("/forms/:id", jwtAuth(), QuestionController.show);
+router.put(
+  "/forms/:id/questions/:questionId",
+  jwtAuth(),
+  QuestionController.update
+);
+// router.delete("/forms/:id", jwtAuth(), QuestionController.destroy);
 
 export default router;
