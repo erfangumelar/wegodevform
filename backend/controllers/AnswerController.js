@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Form from "../models/Form.js";
 import Answer from "../models/Answer.js";
+import answerDuplicate from "../libraries/answerDuplicate.js";
 
 class AnswerController {
   async store(req, res) {
@@ -10,6 +11,12 @@ class AnswerController {
       }
       if (!mongoose.Types.ObjectId.isValid(req.params.formId)) {
         throw { code: 400, message: "INVALID_ID" };
+      }
+
+      // cek duplicate answers
+      const isDuplicate = await answerDuplicate(req.body.answers);
+      if (isDuplicate) {
+        throw { code: 400, message: "DUPLICATE_ANSWER" };
       }
 
       let fields = {};
