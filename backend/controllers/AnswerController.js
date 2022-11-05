@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Form from "../models/Form.js";
 import Answer from "../models/Answer.js";
 import answerDuplicate from "../libraries/answerDuplicate.js";
+import questionRequiredButEmpty from "../libraries/questionRequiredButEmpty.js";
 
 class AnswerController {
   async store(req, res) {
@@ -13,12 +14,25 @@ class AnswerController {
         throw { code: 400, message: "INVALID_ID" };
       }
 
+      // mengambil data form
+      const form = await Form.findById(req.params.formId);
+
       // cek duplicate answers
       const isDuplicate = await answerDuplicate(req.body.answers);
       if (isDuplicate) {
         throw { code: 400, message: "DUPLICATE_ANSWER" };
       }
 
+      // cek answer required but empty
+      const questionRequiredEmpty = await questionRequiredButEmpty(
+        form,
+        req.body.answers
+      );
+      if (questionRequiredEmpty) {
+        throw { code: 400, message: "QUESTION_REQUIRED_BUT_EMPTY" };
+      }
+
+      // insert to database
       let fields = {};
       req.body.answers.forEach((answer) => {
         fields[answer.questionId] = answer.value;
