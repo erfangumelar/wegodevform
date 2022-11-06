@@ -36,7 +36,11 @@ class AnswerController {
       // cek option value not exist
       const optionNotExist = await optionValueNotExist(form, req.body.answers);
       if (optionNotExist) {
-        throw { code: 400, message: "OPTION_VALUE_IS_NOT_EXIST" };
+        throw {
+          code: 400,
+          message: "OPTION_VALUE_IS_NOT_EXIST",
+          question: optionNotExist,
+        };
       }
 
       // insert to database
@@ -64,6 +68,7 @@ class AnswerController {
       return res.status(error.code || 500).json({
         status: false,
         message: error.message,
+        question: error.question || null,
       });
     }
   }
